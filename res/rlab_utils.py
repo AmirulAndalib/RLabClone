@@ -54,10 +54,6 @@ def findProcess(process, command="", isPid=False):
                     for arg in p.cmdline():
                         if command in str(arg):
                             return True if not isPid else str(pid)
-                        else:
-                            pass
-                else:
-                    pass
             except:  # nosec
                 continue
 
@@ -126,25 +122,23 @@ def memGiB():
 def installQBittorrent():
     if checkAvailable("/usr/bin/qbittorrent-nox"):
         return
-    else:
-        try:
-            runSh("add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y")
-            runSh("apt-get install qbittorrent-nox -qq -y")
-        except:
-            print("Error installing qBittorrent.")
-            exx()
+    try:
+        runSh("add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y")
+        runSh("apt-get install qbittorrent-nox -qq -y")
+    except:
+        print("Error installing qBittorrent.")
+        exx()
 
 
 def installNgrok():
     if checkAvailable("/usr/local/bin/ngrok"):
         return
-    else:
-        runSh(
-            "wget -qq -c -nc https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip"
-        )
-        runSh("unzip -qq -n ngrok-stable-linux-amd64.zip")
-        runSh("mv ngrok /usr/local/bin/ngrok")
-        runSh("rm -f /content/ngrok-stable-linux-amd64.zip")
+    runSh(
+        "wget -qq -c -nc https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip"
+    )
+    runSh("unzip -qq -n ngrok-stable-linux-amd64.zip")
+    runSh("mv ngrok /usr/local/bin/ngrok")
+    runSh("rm -f /content/ngrok-stable-linux-amd64.zip")
 
 
 def installAutoSSH():
@@ -157,19 +151,18 @@ def installAutoSSH():
 def installJDownloader():
     if checkAvailable("/root/.JDownloader/JDownloader.jar"):
         return
-    else:
-        runSh("mkdir -p -m 666 /root/.JDownloader/libs")
-        runSh("apt-get install openjdk-8-jre-headless -qq -y")
-        runSh(
-            "wget -q http://installer.jdownloader.org/JDownloader.jar -O /root/.JDownloader/JDownloader.jar"
-        )
-        runSh("java -jar /root/.JDownloader/JDownloader.jar -norestart -h")
-        runSh(
-            "wget -q https://biplobsd.github.io/RLabClone/res/jdownloader/sevenzipjbinding1509.jar -O /root/.JDownloader/libs/sevenzipjbinding1509.jar"
-        )
-        runSh(
-            "wget -q https://biplobsd.github.io/RLabClone/res/jdownloader/sevenzipjbinding1509Linux.jar -O /root/.JDownloader/libs/sevenzipjbinding1509Linux.jar"
-        )
+    runSh("mkdir -p -m 666 /root/.JDownloader/libs")
+    runSh("apt-get install openjdk-8-jre-headless -qq -y")
+    runSh(
+        "wget -q http://installer.jdownloader.org/JDownloader.jar -O /root/.JDownloader/JDownloader.jar"
+    )
+    runSh("java -jar /root/.JDownloader/JDownloader.jar -norestart -h")
+    runSh(
+        "wget -q https://biplobsd.github.io/RLabClone/res/jdownloader/sevenzipjbinding1509.jar -O /root/.JDownloader/libs/sevenzipjbinding1509.jar"
+    )
+    runSh(
+        "wget -q https://biplobsd.github.io/RLabClone/res/jdownloader/sevenzipjbinding1509Linux.jar -O /root/.JDownloader/libs/sevenzipjbinding1509Linux.jar"
+    )
 
 
 def installMkvTools():
@@ -186,38 +179,39 @@ def installMkvTools():
 
 
 def installFilebot(installBackup=False):
-    if not checkAvailable("/usr/bin/filebot"):
-        if installBackup:
-            if not checkAvailable("/usr/local/sessionSettings/fb/jar"):
-                runSh(
-                    "curl -fsSL https://biplobsd.github.io/RLabClone/res/gdown.sh | bash -s 1OjSf-g8NxssKALp6zIJwJT7YamSVLGiR /usr/local/sessionSettings/fblx.7z \
+    if checkAvailable("/usr/bin/filebot"):
+        return
+    if installBackup:
+        if not checkAvailable("/usr/local/sessionSettings/fb/jar"):
+            runSh(
+                "curl -fsSL https://biplobsd.github.io/RLabClone/res/gdown.sh | bash -s 1OjSf-g8NxssKALp6zIJwJT7YamSVLGiR /usr/local/sessionSettings/fblx.7z \
                         && 7z x /usr/local/sessionSettings/fblx.7z -o/usr/local/sessionSettings/fb",
-                    shell=True,
-                )
-
-            if not checkAvailable("/usr/share/filebot/bin"):
-                runSh("mkdir -p -m 666 /usr/share/filebot/bin")
-                runSh("mkdir -p -m 666 /usr/share/filebot/jar")
-            runSh(
-                "wget -q https://biplobsd.github.io/RLabClone/res/filebot -O /usr/bin/filebot"
-            )
-            runSh("chmod +x /usr/bin/filebot")
-            runSh("cp -r /usr/local/sessionSettings/fb/jar /usr/share/filebot")
-            runSh(
-                "cp -r /usr/local/sessionSettings/fb/filebot.sh /usr/share/filebot/bin/filebot.sh"
-            )
-        else:
-            runSh(
-                "curl -fsSL https://raw.githubusercontent.com/filebot/plugins/master/installer/deb.sh | bash -s",
                 shell=True,
             )
-            if checkAvailable("/usr/share/filebot/jar/filebot.jar"):
-                runSh(
-                    "mv /usr/share/filebot/jar/filebot.jar /usr/share/filebot/jar/filebot.jar.bak"
-                )
+
+        if not checkAvailable("/usr/share/filebot/bin"):
+            runSh("mkdir -p -m 666 /usr/share/filebot/bin")
+            runSh("mkdir -p -m 666 /usr/share/filebot/jar")
+        runSh(
+            "wget -q https://biplobsd.github.io/RLabClone/res/filebot -O /usr/bin/filebot"
+        )
+        runSh("chmod +x /usr/bin/filebot")
+        runSh("cp -r /usr/local/sessionSettings/fb/jar /usr/share/filebot")
+        runSh(
+            "cp -r /usr/local/sessionSettings/fb/filebot.sh /usr/share/filebot/bin/filebot.sh"
+        )
+    else:
+        runSh(
+            "curl -fsSL https://raw.githubusercontent.com/filebot/plugins/master/installer/deb.sh | bash -s",
+            shell=True,
+        )
+        if checkAvailable("/usr/share/filebot/jar/filebot.jar"):
             runSh(
-                "wget -q https://biplobsd.github.io/RLabClone/res/filebot.jar -O /usr/share/filebot/jar/filebot.jar"
+                "mv /usr/share/filebot/jar/filebot.jar /usr/share/filebot/jar/filebot.jar.bak"
             )
+        runSh(
+            "wget -q https://biplobsd.github.io/RLabClone/res/filebot.jar -O /usr/share/filebot/jar/filebot.jar"
+        )
 
 
 def installRclone():
@@ -230,7 +224,7 @@ def installRclone():
 
 def checkServer(hostname):
     # nosec
-    return True if runSh(f"ping -c 1 {hostname}", shell=True) == 0 else False
+    return runSh(f"ping -c 1 {hostname}", shell=True) == 0
 
 
 def configTimezone(auto=True):
@@ -313,13 +307,12 @@ def addUtils():
 def prepareSession():
     if checkAvailable("ready.txt", userPath=True):
         return
-    else:
-        addUtils()
-        configTimezone()
-        uploadRcloneConfig()
-        uploadQBittorrentConfig()
-        installRclone()
-        accessSettingFile("ready.txt", {"prepared": "True"})
+    addUtils()
+    configTimezone()
+    uploadRcloneConfig()
+    uploadQBittorrentConfig()
+    installRclone()
+    accessSettingFile("ready.txt", {"prepared": "True"})
 
 
 # rClone ======================================================================
@@ -500,7 +493,7 @@ def startJDFormLogin(a=1):
         if not Email.value.strip():
             ERROR = "Email field is empty."
             THROW_ERROR
-        if not "@" in Email.value and not "." in Email.value:
+        if "@" not in Email.value and "." not in Email.value:
             ERROR = "Email is an incorrect format."
             THROW_ERROR
         if not Password.value.strip():
